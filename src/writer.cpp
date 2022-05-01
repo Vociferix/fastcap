@@ -7,9 +7,6 @@
 #include <pcap.h>
 #include <spdlog/spdlog.h>
 
-constexpr size_t QUEUE_SIZE = 128;
-constexpr size_t INIT_BUF_SIZE = sizeof(PktHdr) + 1550;
-
 void write(std::ofstream& f, const void* data, std::streamsize len) {
     f.write(reinterpret_cast<const char*>(data), len);
 }

@@ -39,6 +39,8 @@ target_link_libraries(libfastcap PUBLIC
     spdlog::spdlog
 )
 
+set_target_properties(libfastcap PROPERTIES OUTPUT_NAME fastcap)
+
 add_executable(fastcap fastcap.cpp)
 
 target_link_libraries(fastcap PRIVATE
@@ -46,3 +48,13 @@ target_link_libraries(fastcap PRIVATE
     CLI11::CLI11
     ${CMAKE_THREAD_LIBS_INIT}
 )
+
+set_target_properties(fastcap PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}"
+)
+foreach(CFG ${CMAKE_CONFIGURATION_TYPES})
+    string(TOUPPER "${CFG}" CFG)
+    set_target_properties(fastcap PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_${CFG} "${PROJECT_BINARY_DIR}"
+    )
+endforeach()

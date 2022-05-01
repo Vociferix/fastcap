@@ -79,7 +79,7 @@ int fastcap(int argc, const char* const* argv) {
     capture_cmd->add_option("-c,--file-count", config.num_files, "Number of parallel files to write")->capture_default_str()->check(CLI::Range(1, std::numeric_limits<int>::max()));
     capture_cmd->add_option("-t,--stats-interval", config.stats_interval, "Time between statistics measurements in seconds (defaults to once at the end of capture)")->check(CLI::NonNegativeNumber);
     capture_cmd->add_option("-s,--snaplen", config.snaplen, "Packet snapshot length in bytes")->capture_default_str()->check(CLI::PositiveNumber);
-    capture_cmd->add_option("-b,--bufsize", config.bufsz, "Buffer size in MiB for capturing packets")->capture_default_str()->check(CLI::Range(1, std::numeric_limits<int>::max() >> 20));
+    capture_cmd->add_option("-b,--bufsize", config.bufsz, "Buffer size in MiB for capturing packets")->capture_default_str()->check(CLI::Range(1, std::numeric_limits<int>::max() >> (20 - 1)));
     capture_cmd->add_flag("-n,--nano", config.nano, "Record timestamps with nanosecond precision");
     capture_cmd->add_flag("-p,--promisc", config.promisc, "Enable promiscuous mode on the interface for capture");
     capture_cmd->add_flag("-m,--rfmon", config.rfmon, "Enable monitor mode on the interface for capture");
@@ -94,7 +94,7 @@ int fastcap(int argc, const char* const* argv) {
 
     CLI11_PARSE(app, argc, argv);
 
-    config.bufsz <<= 20;
+    config.bufsz <<= (20 - 1);
 
     spdlog::init_thread_pool(8192, 1);
     auto lvl = spdlog::level::info;
